@@ -21,10 +21,13 @@ class Main {
         List<String> list= new ArrayList<>(map.keySet());
         
         Collections.sort(list);
+        StringBuilder sb = new StringBuilder();
         for(int i=0;i<list.size();i++){
             String str =list.get(i);
-            System.out.println(str+" "+map.get(str));
+            sb.append(str).append(' ').append(map.get(str)).append('\n');
         }
+        System.out.println(sb);
+     
     }
 
 
