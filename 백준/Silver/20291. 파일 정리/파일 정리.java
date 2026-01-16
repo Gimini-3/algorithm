@@ -12,9 +12,11 @@ class Main {
         for(int i=0;i<n;i++){
             String str =br.readLine();
            // System.out.println(str);
-            String[] sp = str.split("\\.");
+            int dot = str.lastIndexOf('.');
+            String sp = str.substring(dot+1);
+            
             //System.out.println(sp.length);
-            map.put(sp[1],map.getOrDefault(sp[1],0)+1);
+            map.put(sp,map.getOrDefault(sp,0)+1);
         }
         List<String> list= new ArrayList<>(map.keySet());
         
