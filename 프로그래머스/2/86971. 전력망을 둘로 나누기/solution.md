@@ -4,62 +4,36 @@
 
 먼저 `wires`를 이용해서 양방향 그래프를 만들었다.
 
-전선을 하나씩 끊어보면서, 끊은 전선의 한쪽 노드 `x`에서 탐색을 시작한다.
+전선을 하나씩 끊어본다고 생각하고, 해당 전선의 한쪽 노드 `x`부터 BFS를 돌렸다.
 
-탐색할 때 현재 끊은 전선인 `x ↔ y`는 지나가지 않도록 제외했다.
-
-```java
-if(now_node==x && next_node==y) continue;
-if(now_node==y && next_node==x) continue;
-```
-
-탐색하면서 연결된 노드 개수를 `count`로 센다.
-
-그러면 두 전력망의 송전탑 개수는
-
-```text
-count
-n - count
-```
-
-이므로 차이는
+탐색할 때 현재 끊은 전선 `x - y`는 지나가지 않도록 했다.
 
 ```java
-Math.abs(count - (n - count))
+if(now_node == x && next_node == y) continue;
+if(now_node == y && next_node == x) continue;
 ```
 
-이고, 코드에서는 같은 의미로
+BFS로 `x` 쪽 전력망에 몇 개의 송전탑이 있는지 `count`로 구했다.
+
+그러면 반대쪽은 `n - count`개이므로 두 전력망의 차이는
 
 ```java
-Math.abs(n - 2 * count)
+n - 2 * count
 ```
 
-를 사용했다.
+가 된다.
 
-모든 전선을 한 번씩 끊어보고 가장 작은 차이를 `answer`에 저장했다.
-
----
+모든 전선을 하나씩 끊어보면서 차이의 최솟값을 구했다.
 
 ## 2. 자료구조 선택 이유
 
-그래프에서 한 노드와 연결된 노드들을 저장해야 해서 **인접 리스트**를 사용했다.
+노드마다 연결된 노드가 여러 개 있을 수 있어서 인접 리스트로 그래프를 만들었다.
 
 ```java
 ArrayList<Integer>[] graph
 ```
 
-그래프를 탐색할 때는 `Deque`를 사용했다.
-
-내 코드에서는
-
-```java
-deque.addLast()
-deque.pollLast()
-```
-
-를 같이 사용해서 가장 마지막에 넣은 노드를 먼저 꺼내므로 **DFS 방식**으로 탐색한다.
-
----
+그래프 탐색은 `Deque`를 Queue처럼 사용해서 BFS로 했다.
 
 ## 3. 기억할 문법
 
@@ -68,40 +42,34 @@ deque.pollLast()
 ```java
 ArrayList<Integer>[] graph = new ArrayList[n + 1];
 
-for (int i = 0; i < n + 1; i++) {
+for(int i = 0; i < n + 1; i++){
     graph[i] = new ArrayList<>();
 }
 ```
 
-각 인덱스마다 `ArrayList<Integer>`가 하나씩 있는 배열.
+`ArrayList<Integer>`를 원소로 가지는 배열이다.
 
 ```java
 graph[x].add(y);
 graph[y].add(x);
 ```
 
-이렇게 하면 `x`와 `y`가 서로 연결되어 있다는 것을 저장할 수 있다.
+양방향 연결이라 둘 다 추가한다.
 
-### `deque.addLast()`
+### `Deque`로 Queue 사용
 
 ```java
+Deque<Integer> deque = new ArrayDeque<>();
+
 deque.addLast(x);
+int now_node = deque.pollFirst();
 ```
 
-Deque의 **뒤쪽에 값을 추가**한다.
+* `addLast()` : 뒤에 추가
+* `pollFirst()` : 앞에서 꺼냄
 
-내 코드에서는
+뒤에 넣고 앞에서 꺼내므로 **FIFO → BFS**가 된다.
 
-```java
-deque.addLast(next_node);
-int now_node = deque.pollLast();
-```
-
-뒤에 넣고 뒤에서 꺼내기 때문에 **Stack처럼 LIFO로 사용**한 것이다.
-
----
-
-## 4. 시간복잡도
 
 전선은 총 `n - 1`개이고, 전선을 하나 끊어볼 때마다 그래프 전체를 탐색한다.
 
