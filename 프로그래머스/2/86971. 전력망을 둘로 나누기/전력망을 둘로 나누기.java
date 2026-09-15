@@ -14,24 +14,24 @@ class Solution {
             graph[x].add(y);
             graph[y].add(x);
         }
-        int[] check;
+        int[] visited;
         Deque<Integer> deque;
         for(int i=0;i<n-1;i++){
             int x= wires[i][0];
             int y = wires[i][1];
-            check = new int[n+1];
+            visited= new int[n+1];
             deque = new ArrayDeque<>();
             deque.addLast(x);
-            check[x]=1;
+            visited[x]=1;
             int count =1;
             while(!deque.isEmpty()){
-                int now_node = deque.pollLast();
+                int now_node = deque.pollFirst();
                 for(int j=0;j<graph[now_node].size();j++){
                     int next_node = graph[now_node].get(j);
-                    if(check[next_node]==1)continue;
+                    if(visited[next_node]==1)continue;
                     if(now_node==x&&next_node==y)continue;
                     if(now_node==y&&next_node==x)continue;
-                    check[next_node]=1;
+                    visited[next_node]=1;
                     count++;
                     deque.addLast(next_node);
                 }
