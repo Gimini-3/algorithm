@@ -7,6 +7,7 @@ class Solution {
         Map<String,Integer> set = new HashMap<>();
         
         for(int i=0;i<completion.length;i++){
+            
             Integer a = set.get(completion[i]);
             if(a==null){
                 set.put(completion[i],1);
