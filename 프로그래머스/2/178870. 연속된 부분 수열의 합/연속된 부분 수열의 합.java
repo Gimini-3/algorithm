@@ -9,8 +9,7 @@ class Solution {
         while(true){
            // System.out.println(start_idx+" "+end_idx+" "+sum);
             
-            if(start_idx>=sequence.length)break;
-            if(end_idx>=sequence.length)break;
+           
             if(start_idx>end_idx)break;
             if(sum>k){
                 sum-=sequence[start_idx];
