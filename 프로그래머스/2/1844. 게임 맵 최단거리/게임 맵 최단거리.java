@@ -4,6 +4,7 @@ class Solution {
     public static int[] dx = {-1,0,0,1};
     public static int[] dy = {0,-1,1,0};
     
+    
     public int solution(int[][] maps) {
         int answer = 0;
         int n=maps.length;
